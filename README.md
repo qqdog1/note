@@ -38,5 +38,15 @@ line要設定webhook一定要接https
 ### 解決方式  
 ec2上架nginx server申請憑證掛上去  
 or  
-load balance + ec2 + ACM 
+load balance + ec2 + ACM  
 但不管上述哪個方法都要申請一個domain  
+新解法還沒試 open ssl + nginx  
+
+最後workaround直接用api-gateway接ec2  
+但會出現linebot解訊息掉header  
+解法直接用pure spring boot + linebot sdk  
+自己解訊息不管header硬做  
+
+### 其他想試的  
+github -> aws codeDeploy -> ec2  
+github -> aws codeDeploy -> lambda  
