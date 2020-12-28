@@ -17,16 +17,16 @@ import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.message.TextMessage;
 
-public class BotEntry implements RequestStreamHandler {
+public class LBotEntry implements RequestStreamHandler {
 	private LambdaLogger logger;
-	private LineMessagingClient lineMessagingService;
+	private LineMessagingClient lineMessagingClient;
 
 	@Override
 	public void handleRequest(InputStream input, OutputStream output, Context context) {
 		logger = context.getLogger();
 
 		try {
-			lineMessagingService = LineMessagingClient.builder(System.getenv("CHANNEL_ACCESS_TOKEN")).build();
+			lineMessagingClient = LineMessagingClient.builder(System.getenv("CHANNEL_ACCESS_TOKEN")).build();
 			
 			String inputMessage = IOUtils.toString(input, "UTF-8");
 
@@ -39,7 +39,7 @@ public class BotEntry implements RequestStreamHandler {
 			String replyToken = node.get("events").get(0).get("replyToken").asText();
 			String text = node.get("events").get(0).get("message").get("text").asText() + " --> lambda";
 			
-			lineMessagingService.replyMessage(new ReplyMessage(replyToken, new TextMessage(text)));
+			lineMessagingClient.replyMessage(new ReplyMessage(replyToken, new TextMessage(text)));
 			
 			output.write("OK".getBytes());
 		} catch (IOException e) {
